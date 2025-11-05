@@ -2,7 +2,7 @@
 const API_BASE_URL = 'http://localhost:8080';
 
 export const authService = {
-  async authenticate(email, password) {
+  async authenticate(email: String, password: String) {
     const response = await fetch(`${API_BASE_URL}/authenticate`, {
       method: 'POST',
       headers: {
@@ -18,7 +18,6 @@ export const authService = {
     const data = await response.json();
     const token = data.token;
 
-    // Store token in localStorage
     localStorage.setItem('authToken', token);
 
     return token;

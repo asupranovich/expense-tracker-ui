@@ -102,7 +102,7 @@ function Expenses() {
     const handleDeleteExpense = async (id) => {
         try {
             await expenseService.deleteExpense(id);
-            fetchExpenses(activeMonth);
+            await fetchExpenses(activeMonth);
         } catch (err) {
             setError(err.message || 'Failed to delete expense');
         }
@@ -127,9 +127,9 @@ function Expenses() {
 
     const handleAddExpense = async () => {
         setSubmitError('');
-        const v = validate();
-        if (v) {
-            setSubmitError(v);
+        const validationError = validate();
+        if (validationError) {
+            setSubmitError(validationError);
             return;
         }
         try {
@@ -143,8 +143,8 @@ function Expenses() {
                     id: Number(payerId)
                 },
                 amount: parseFloat(String(amount).replace(',', '.')),
-                description: description || undefined,
-                remark: remark || undefined,
+                description: description,
+                remark: remark,
             });
 
             // After success: navigate to the month of the new expense and refresh
@@ -189,9 +189,9 @@ function Expenses() {
 
     const saveEdit = async () => {
         setEditError('');
-        const v = validateEdit();
-        if (v) {
-            setEditError(v);
+        const validationError = validateEdit();
+        if (validationError) {
+            setEditError(validationError);
             return;
         }
         try {

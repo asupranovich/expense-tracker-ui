@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { householdService, type Household } from '../services/householdService';
+import { Household } from '@/types';
+import { householdService } from '../services/householdService';
 
 export type HouseholdContextValue = {
   data: Household | null;
