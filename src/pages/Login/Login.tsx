@@ -10,7 +10,7 @@ function Login() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
         setError('');
         setLoading(true);
@@ -18,7 +18,7 @@ function Login() {
         try {
             await authService.authenticate(username, password);
             navigate('/expenses');
-        } catch (err) {
+        } catch (err: any) {
             setError(err.message || 'Login failed. Please check your credentials.');
         } finally {
             setLoading(false);

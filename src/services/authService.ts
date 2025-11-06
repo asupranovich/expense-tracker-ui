@@ -2,7 +2,7 @@
 const API_BASE_URL = 'http://localhost:8080';
 
 export const authService = {
-  async authenticate(email: String, password: String) {
+  async authenticate(email: string, password: string) {
     const response = await fetch(`${API_BASE_URL}/authenticate`, {
       method: 'POST',
       headers: {

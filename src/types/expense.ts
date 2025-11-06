@@ -26,7 +26,8 @@ export interface Expense extends Entity {
   remark: string | null;
 }
 
-export interface ExpenseForm extends Entity {
+export interface ExpenseForm {
+  id?: number;
   payDate: string;
   category: Entity;
   payer: Entity;
