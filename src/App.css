@@ -2,11 +2,193 @@
   box-sizing: border-box;
 }
 
-body {
+.page-container {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding: 2rem;
+}
+
+/* Page Header */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.page-header h2 {
   margin: 0;
+  color: #333;
+}
+
+.page-header .page-header-actions {
+  margin-top: 5px;
+}
+
+.page-header button {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 18px 18px;
+  vertical-align: middle;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  background-color: transparent;
+  width: 24px;
+  height: 18px;
+}
+
+.page-header .logout-button {
+  background-image: url('assets/logout.svg');
+}
+
+.page-header .settings-button {
+  background-image: url('assets/settings.svg');
+}
+
+.page-header .save-button {
+  background-image: url('assets/save.svg');
+}
+
+.page-header .cancel-button {
+  background-image: url('assets/cancel.svg');
+}
+
+.page-content {
+  background: white;
+  padding: 5px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.content-row {
+  display: flex;
+  gap: 5px;
+}
+
+.content-row input[type="text"],
+.content-row input[type="email"] {
+  padding: 6px 8px;
+  border: 1px solid #dcdfe6;
+  border-radius: 3px;
+}
+
+fieldset {
+  border: 1px solid #dcdfe6;
+  border-radius: 3px;
+  padding: 10px;
+  margin-top: 5px;
+}
+
+fieldset legend {
+  font-weight: bold;
+  font-size: 14px;
+  padding: 0 6px;
+}
+
+/* Data Table */
+.date-table-container {
+  overflow-x: auto;
+  border-radius: 3px;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table td {
+  padding: 5px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.data-table thead tr {
+  border: 1px solid #e0e0e0;
+}
+
+.data-table th {
+  background: #f5f5f5;
+  font-weight: 600;
+  color: #333;
+  padding: 10px 5px 10px 7px;
+  text-align: left;
+}
+
+.data-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.data-table tfoot td {
+  font-weight: bold;
+  border-bottom: none;
+}
+
+.data-table td button {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 16px 16px;
+  vertical-align: middle;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: transparent;
+  width: 22px;
+  height: 18px;
+}
+
+.data-table td .add-button {
+  background-image: url('assets/add.svg');
+}
+
+.data-table td .edit-button {
+  background-image: url('assets/edit.svg');
+}
+
+.data-table td .delete-button {
+  background-image: url('assets/delete.svg');
+}
+
+.data-table td .save-button {
+  background-image: url('assets/save.svg');
+}
+
+.data-table td .cancel-button {
+  background-image: url('assets/cancel.svg');
+}
+
+.data-table td button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.data-table input[type="date"],
+.data-table input[type="email"],
+.data-table input[type="number"],
+.data-table input[type="text"],
+.data-table input[type="password"],
+.data-table select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem;
+  border: 1px solid #dcdfe6;
+  border-radius: 3px;
+}
+
+.data-table input[type="date"] {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
   'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
   sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  width: 110px;
+}
+
+.data-table select {
+  padding: 0.5rem 0.3rem;
 }

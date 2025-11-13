@@ -2,8 +2,8 @@ import {apiClient} from "./apiClient";
 import {Expense, ExpenseForm} from "@/types";
 
 export const expenseService = {
-  async getExpensesByMonth(month: string): Promise<Expense[]> {
-    return await apiClient.get(`expenses?date=${month}-01`);
+  async getMonthExpenses(month: number, year: number): Promise<Expense[]> {
+    return await apiClient.get(`expenses?month=${month}&year=${year}`);
   },
 
   async addExpense(payload: ExpenseForm) {

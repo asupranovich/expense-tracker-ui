@@ -54,7 +54,7 @@ function ExpenseRow({
     };
 
     return (
-        <tr key={expense.id} className="new-expense-row">
+        <tr key={expense.id} className="edit-expense-row">
           <td>
             <input
                 type="date"
@@ -90,7 +90,7 @@ function ExpenseRow({
           <td>
             <input
                 type="number"
-                step="0.01"
+                step="0.1"
                 min="0"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
@@ -118,8 +118,9 @@ function ExpenseRow({
             />
           </td>
           <td>
-            <button onClick={saveEdit} disabled={disabled} className="save-button"/>
-            <button onClick={onCancelEdit} disabled={disabled} className="cancel-button"/>
+            <button onClick={saveEdit} disabled={disabled} className="save-button" title="Save"/>
+            <button onClick={onCancelEdit} disabled={disabled} className="cancel-button"
+                    title="Cancel"/>
           </td>
         </tr>
     );
@@ -139,10 +140,9 @@ function ExpenseRow({
           <td>{expense.description}</td>
           <td>{expense.remark}</td>
           <td>
-            <button className="edit-button" onClick={() => onStartEdit(expense.id)}
-                    aria-label="Edit"/>
+            <button className="edit-button" onClick={() => onStartEdit(expense.id)} title="Edit"/>
             <button className="delete-button" onClick={() => deleteExpense(expense.id)}
-                    aria-label="Delete"/>
+                    title="Delete"/>
           </td>
         </tr>
     );

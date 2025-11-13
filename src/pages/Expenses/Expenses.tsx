@@ -2,28 +2,31 @@ import React, {useState, useEffect} from 'react';
 import {expenseService} from '../../services/expenseService';
 import {useHousehold} from '../../context/HouseholdContext';
 import {Expense, ExpenseForm} from '@/types';
-import Header from '../../components/Header';
+import Header from './components/Header';
 import './Expenses.css';
 import AddExpenseRow from "./components/AddExpenseRow";
-import MonthTabs, {formatMonthKey} from "./components/MonthTabs";
+import MonthTabs from "./components/MonthTabs";
 import ExpenseRow from "./components/ExpenseRow";
+import Statistics from "./components/Statistics";
 
 function Expenses() {
   const {data: household, loading: householdLoading} = useHousehold();
 
+  const now = new Date();
+  const [activeMonth, setActiveMonth] = useState<string>(`${now.getFullYear()}-${now.getMonth() + 1}`);
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [activeMonth, setActiveMonth] = useState<string>(() => formatMonthKey(new Date()));
   const [editingExpenseId, setEditingExpenseId] = useState<number | null>(null);
 
   useEffect(() => {
-    fetchExpenses(activeMonth);
+    fetchExpenses();
   }, [activeMonth]);
 
-  const fetchExpenses = async (month: string) => {
+  const fetchExpenses = async () => {
     try {
       setLoading(true);
-      const data = await expenseService.getExpensesByMonth(month);
+      const [year, month] = activeMonth.split('-').map(Number);
+      const data = await expenseService.getMonthExpenses(month, year);
       setExpenses(Array.isArray(data) ? data : []);
     } catch (err: any) {
       alert(err?.message || 'Failed to load expenses');
@@ -36,7 +39,7 @@ function Expenses() {
   const deleteExpense = async (id: number) => {
     try {
       await expenseService.deleteExpense(id);
-      await fetchExpenses(activeMonth);
+      await fetchExpenses();
     } catch (err: any) {
       alert(err?.message || 'Failed to delete expense');
     }
@@ -46,7 +49,7 @@ function Expenses() {
     try {
       setLoading(true);
       await expenseService.addExpense(expense);
-      await fetchExpenses(activeMonth);
+      await fetchExpenses();
     } catch (err: any) {
       alert(err?.message || 'Failed to add expense');
     } finally {
@@ -59,7 +62,7 @@ function Expenses() {
       setLoading(true);
       await expenseService.updateExpense(Number(editingExpenseId), expense);
       setEditingExpenseId(null);
-      await fetchExpenses(activeMonth);
+      await fetchExpenses();
     } catch (err: any) {
       alert(err?.message || 'Failed to update expense');
     } finally {
@@ -70,61 +73,61 @@ function Expenses() {
   const disableForm = loading || householdLoading;
 
   return (
-      <div className="expenses-container">
-        <Header title="Expense Tracker"/>
+      <div className="page-container">
+        <Header/>
         <MonthTabs activeMonth={activeMonth} setActiveMonth={setActiveMonth}/>
 
-        <div className="expenses-content">
-          <div className="table-container">
-            <table className="expenses-table">
-              <thead>
-              <tr>
-                <th>Pay Date</th>
-                <th>Category</th>
-                <th>Payer</th>
-                <th>Amount</th>
-                <th>Description</th>
-                <th>Remark</th>
-                <th></th>
-              </tr>
-              </thead>
-              <tbody>
-              <AddExpenseRow
-                  household={household}
-                  onAdd={addExpense}
-                  disabled={disableForm}
-              />
-
-              {expenses.map((expense) => (
-                      <ExpenseRow
-                          key={expense.id}
-                          editingId={editingExpenseId}
-                          expense={expense}
-                          household={household}
-                          onDelete={deleteExpense}
-                          onStartEdit={(id) => setEditingExpenseId(id)}
-                          onCancelEdit={() => setEditingExpenseId(null)}
-                          onSave={updateExpense}
-                          disabled={loading}
-                      />
-                  )
-              )}
-
-              {expenses.length === 0 && (
+        <div className="page-content">
+          <div className="content-row">
+            <fieldset>
+              <legend>Expenses</legend>
+              <div className="data-table-container">
+                <table className="data-table">
+                  <thead>
                   <tr>
-                    <td colSpan={7} className="no-expenses">No expenses found</td>
+                    <th>Date</th>
+                    <th>Category</th>
+                    <th>Payer</th>
+                    <th>Amount</th>
+                    <th>Description</th>
+                    <th>Remark</th>
+                    <th></th>
                   </tr>
-              )}
-              </tbody>
-              <tfoot>
-              <tr>
-                <td colSpan={3} className="total-label">Total</td>
-                <td className="amount total-amount">
-                  ${expenses.reduce((sum, exp) => sum + exp.amount, 0).toFixed(2)}
-                </td>
-              </tr>
-              </tfoot>
-            </table>
+                  </thead>
+                  <tbody>
+                  <AddExpenseRow
+                      activeMonth={activeMonth}
+                      household={household}
+                      onAdd={addExpense}
+                      disabled={disableForm}
+                  />
+
+                  {expenses.map((expense) => (
+                          <ExpenseRow
+                              key={expense.id}
+                              editingId={editingExpenseId}
+                              expense={expense}
+                              household={household}
+                              onDelete={deleteExpense}
+                              onStartEdit={(id) => setEditingExpenseId(id)}
+                              onCancelEdit={() => setEditingExpenseId(null)}
+                              onSave={updateExpense}
+                              disabled={loading}
+                          />
+                      )
+                  )}
+
+                  {expenses.length === 0 && (
+                      <tr>
+                        <td colSpan={7} className="no-expenses">No expenses found</td>
+                      </tr>
+                  )}
+                  </tbody>
+                </table>
+              </div>
+            </fieldset>
+
+            <Statistics expenses={expenses}/>
           </div>
         </div>
       </div>

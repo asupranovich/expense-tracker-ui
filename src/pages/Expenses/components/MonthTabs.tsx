@@ -5,26 +5,15 @@ type Props = {
   setActiveMonth: (month: string) => void,
 }
 
-export function formatMonthKey(date: Date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  return `${year}-${month}`; // YYYY-MM
-}
-
-function readableMonth(monthKey: string) {
-  const [year, month] = monthKey.split('-').map(Number);
-  const date = new Date(year, month - 1, 1);
-  return date.toLocaleString(undefined, { month: 'long', year: 'numeric' });
-}
-
 function MonthTabs({activeMonth, setActiveMonth}: Props) {
   const months = useMemo(() => {
     const list = [];
     const now = new Date();
     for (let i = 0; i < 6; i++) {
       const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
-      const key = formatMonthKey(date);
-      list.push({ key, label: readableMonth(key) });
+      const key = `${date.getFullYear()}-${date.getMonth() + 1}`;
+      const label = date.toLocaleString(undefined, {month: 'long', year: 'numeric'});
+      list.push({key, label});
     }
     return list;
   }, []);

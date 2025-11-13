@@ -3,12 +3,13 @@ import {ExpenseForm, Household} from "@/types";
 import {validateExpense} from "../../../utils/validationUtils";
 
 type Props = {
+  activeMonth: string,
   household: Household | null,
   onAdd: (expense: ExpenseForm) => void,
   disabled: boolean,
 }
 
-function AddExpenseRow({household, onAdd, disabled}: Props) {
+function AddExpenseRow({activeMonth, household, onAdd, disabled}: Props) {
   const [payDate, setPayDate] = useState<string>(new Date().toISOString().slice(0, 10));
   const [categoryId, setCategoryId] = useState<string>('');
   const [payerId, setPayerId] = useState<string>('');
@@ -51,8 +52,15 @@ function AddExpenseRow({household, onAdd, disabled}: Props) {
     }
   }, [household]);
 
+  useEffect(() => {
+    const now = new Date();
+    const [year, month] = activeMonth.split('-').map(Number);
+    const activeMonthDate = (now.getFullYear() !== year || now.getMonth() + 1 !== month) ? new Date(year, month) : now;
+    setPayDate(activeMonthDate.toISOString().slice(0, 10));
+  }, [activeMonth]);
+
   return (
-      <tr className="new-expense-row">
+      <tr className="edit-expense-row">
         <td>
           <input
               type="date"
@@ -88,7 +96,7 @@ function AddExpenseRow({household, onAdd, disabled}: Props) {
         <td>
           <input
               type="number"
-              step="0.01"
+              step="0.1"
               min="0"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
@@ -116,7 +124,7 @@ function AddExpenseRow({household, onAdd, disabled}: Props) {
           />
         </td>
         <td>
-          <button onClick={handleAddExpense} disabled={disabled} className="add-button"/>
+          <button onClick={handleAddExpense} disabled={disabled} className="add-button" title="Add"/>
         </td>
       </tr>
   );
