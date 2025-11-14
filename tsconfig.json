@@ -6,6 +6,7 @@
     "lib": ["es2017", "dom"],
     "strict": true,
     "moduleResolution": "node",
+    "types": ["vite/client", "node"],
     "isolatedModules": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
